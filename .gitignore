@@ -1,0 +1,3 @@
+# Ignore secure data from commits
+
+secure.php
