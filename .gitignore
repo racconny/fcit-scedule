@@ -1,3 +1,4 @@
 # Ignore secure data from commits
 
 secure.php
+error_log
