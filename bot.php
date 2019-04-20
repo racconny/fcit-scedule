@@ -50,13 +50,14 @@ function welcome($message, $bot){
     $phrases = $GLOBALS['phrases'];
     $json = new JSON($GLOBALS['schedule']);
 
-    $groups = array_chunk($json->getCourses(), 3, false);
-    $keyboard = new \TelegramBot\Api\Types\ReplyKeyboardMarkup($groups, true);
+    //$groups = array_chunk($json->getCourses(), 3, false);
+    $roles = array(array("Для студента"), array("Для викладача"), array("Для аудиторії"));
+    $keyboard = new \TelegramBot\Api\Types\ReplyKeyboardMarkup($roles, true);
 
     $chatid = $message->getChat()->getId();
 
     $bot->sendMessage($chatid, $phrases['welcome']);
-    $bot->sendMessage($chatid, $phrases['select_course'], null, false, null, $keyboard);
+    $bot->sendMessage($chatid, $phrases['select_role'], null, false, null, $keyboard);
 }
 
 
