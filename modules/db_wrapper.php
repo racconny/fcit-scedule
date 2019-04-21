@@ -53,6 +53,18 @@ class DB
         }
     }
 
+    public function getUserGroup($tgid){
+        $sql = "select * from User where tg_id = $tgid";
+        $result = $this->connection->query($sql);
+
+        if ($result->num_rows == 0) {
+            return -1;
+        } else {
+            $row = $result->fetch_assoc();
+            return $row['group_'];
+        }
+    }
+
     public function addUser($tgid, $name, $surname, $nav_state = 0)
     {
         $sql = "insert into User (tg_id, name, surname, nav_state) values ($tgid, '$name', '$surname', $nav_state)";

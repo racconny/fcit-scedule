@@ -77,7 +77,7 @@ class JSON
      *
      * @return array of associative arrays with keys of Час, Аудиторія, Викладач, Предмет, Тип
      */
-    public function getWeekdayScedule($course, $group, $weekday, $isodd)
+    public function getWeekdaySchedule($course, $group, $weekday, $isodd)
     {
         $result = array();
         for ($i = 0; $i < sizeof($this->json); $i++) {
