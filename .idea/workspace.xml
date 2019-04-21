@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7ebeb1af-f193-48df-872e-23d57725326b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/bot.php" beforeDir="false" afterPath="$PROJECT_DIR$/bot.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/db_wrapper.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/db_wrapper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/modules/json_wrapper.php" beforeDir="false" afterPath="$PROJECT_DIR$/modules/json_wrapper.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/phrases.php" beforeDir="false" afterPath="$PROJECT_DIR$/phrases.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -73,11 +71,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/bot.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="258">
+            <state relative-caret-position="-2246">
               <caret line="78" column="43" selection-start-line="78" selection-start-column="43" selection-end-line="78" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="60">
+              <caret line="4" column="5" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -123,13 +130,13 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/secure.php" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/Readme.md" />
         <option value="$PROJECT_DIR$/modules/db_wrapper.php" />
         <option value="$PROJECT_DIR$/phrases.php" />
         <option value="$PROJECT_DIR$/modules/json_wrapper.php" />
         <option value="$PROJECT_DIR$/modules/time.php" />
         <option value="$PROJECT_DIR$/bot.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -224,12 +231,12 @@
       <workItem from="1555587284757" duration="631000" />
       <workItem from="1555765354941" duration="7711000" />
       <workItem from="1555774802180" duration="25000" />
-      <workItem from="1555796410345" duration="24364000" />
+      <workItem from="1555796410345" duration="24877000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49303000" />
+    <option name="totallyTimeSpent" value="49816000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1366" height="739" extended-state="6" />
@@ -248,8 +255,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49621212" visible="true" weight="0.16260162" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5037879" side_tool="true" visible="true" weight="0.16260162" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49621212" visible="true" weight="0.4585366" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5037879" side_tool="true" visible="true" weight="0.4585366" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -280,13 +287,6 @@
             <caret line="12" column="96" selection-start-line="12" selection-start-column="96" selection-end-line="12" selection-end-column="96" />
           </first_editor>
           <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="9" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -340,8 +340,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bot.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="258">
+        <state relative-caret-position="-2246">
           <caret line="78" column="43" selection-start-line="78" selection-start-column="43" selection-end-line="78" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="5" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
         </state>
       </provider>
     </entry>
