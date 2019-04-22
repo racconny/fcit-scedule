@@ -28,6 +28,21 @@ class DB
         }
     }
 
+    public function transitLessons($lessons){
+        foreach ($lessons as $item){
+            $time = $item['Час'];
+            $audience = $item['Аудиторія'];
+            $teacher = $item['Викладач'];
+            $subject = $item['Предмет'];
+            $group = $item['Група'];
+            $oddness = $item['Парність'];
+            $type = $item['Тип'];
+            $weekday = $item['День'];
+            $sql = "INSERT INTO `Lesson`(`time_`, `audience`, `teacher`, `subject`, `group_`, `oddness`, `type`, `weekday`) VALUES ('$time','$audience','$teacher','$subject','$group','$oddness','$type','$weekday')";
+            $result = $this->connection->query($sql);
+        }
+    }
+
     public function getUserNavState($tgid)
     {
         $sql = "select * from User where tg_id = $tgid";
@@ -65,6 +80,33 @@ class DB
         }
     }
 
+    public function getTeacherName($tgid){
+        $sql = "select * from User where tg_id = $tgid";
+        $result = $this->connection->query($sql);
+
+        if ($result->num_rows == 0) {
+            return -1;
+        } else {
+            $row = $result->fetch_assoc();
+            return $row['teacher_name'];
+        }
+    }
+
+    public function getTeacherSchedule($teacher, $weekday, $oddness){
+        $sql = "select * from Lesson where weekday = '$weekday' and teacher = '$teacher' and oddness = '$oddness'";
+        $result = $this->connection->query($sql);
+
+        if ($result->num_rows == 0) {
+            return -1;
+        } else {
+            $out = array();
+            while($row = $result->fetch_assoc()){
+                $out[] = $row;
+            }
+            return $out;
+        }
+    }
+
     public function addUser($tgid, $name, $surname, $nav_state = 0)
     {
         $sql = "insert into User (tg_id, name, surname, nav_state) values ($tgid, '$name', '$surname', $nav_state)";
@@ -89,6 +131,11 @@ class DB
 
     public  function updateUserGroup($tgid, $group){
         $sql = "update User set group_ = '$group' where tg_id = '$tgid'";
+        $result = $this->connection->query($sql);
+    }
+
+    public  function updateTeacherName($tgid, $teacher){
+        $sql = "update User set teacher_name = '$teacher' where tg_id = '$tgid'";
         $result = $this->connection->query($sql);
     }
 }

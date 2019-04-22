@@ -31,7 +31,20 @@ $bot->command('wipe', function ($message) use ($bot) {
     wipe($message, $bot);
 });
 
+$bot->command('move', function ($message) use ($bot) {
+    move($message, $bot);
+});
+
 //functions
+
+function move($message, $bot){
+    $bot->sendMessage($message->getChat()->getId(), "Початок копіювання");
+    $db = $GLOBALS['db'];
+    $json = new JSON("resources/lessons.json");
+    $lessons = $json->json;
+    $db->transitLessons($lessons);
+    $bot->sendMessage($message->getChat()->getId(), "Процес копіювання завершено");
+}
 
 function wipe($message, $bot){
     $db = $GLOBALS['db'];
@@ -60,6 +73,18 @@ function router($message, $bot){
        case 1:
            setStudentCourse($message, $bot);
            break;
+       case 2:
+           searchTeacher($message, $bot);
+           break;
+       case 21:
+           processSearch($message, $bot);
+           break;
+       case 22:
+           teacherCheck($message, $bot);
+           break;
+       case 23:
+            teacherMainMenu($message, $bot);
+            break;
        case 11:
            setStudentGroup($message, $bot);
            break;
@@ -71,7 +96,7 @@ function router($message, $bot){
     }
 }
 
-function welcome($message, $bot, $first_time = true){
+    function welcome($message, $bot, $first_time = true){
     $db = $GLOBALS["db"];
     $phrases = $GLOBALS['phrases'];
     $json = new JSON($GLOBALS['schedule']);
@@ -90,7 +115,7 @@ function welcome($message, $bot, $first_time = true){
     $bot->sendMessage($chatid, $phrases['select_role'], null, false, null, $keyboard);
 }
 
-function roleMenu($message, $bot){
+    function roleMenu($message, $bot){
     $chatid = $message->getChat()->getId();
     $phrases = $GLOBALS['phrases'];
     $db = $GLOBALS['db'];
@@ -105,7 +130,9 @@ function roleMenu($message, $bot){
 
     } else if ($message->getText() === "Для викладача"){
         $bot->sendMessage($chatid, $phrases['teacher_set_role']);
+        $bot->sendMessage($chatid, $phrases['enter_teacher_surname']);
         $db->updateUserNav($message->getFrom()->getId(), 2);
+
     } else if ($message->getText() === "Для аудиторії"){
         $bot->sendMessage($chatid, $phrases['audience_set_role']);
         $db->updateUserNav($message->getFrom()->getId(), 3);
@@ -114,7 +141,7 @@ function roleMenu($message, $bot){
     }
 }
 
-function setStudentCourse($message, $bot){
+    function setStudentCourse($message, $bot){
     $chatid = $message->getChat()->getId();
     $text = $message->getText();
 
@@ -139,7 +166,7 @@ function setStudentCourse($message, $bot){
     }
 }
 
-function setStudentGroup($message, $bot){
+    function setStudentGroup($message, $bot){
     $chatid = $message->getChat()->getId();
     $text = $message->getText();
 
@@ -163,7 +190,7 @@ function setStudentGroup($message, $bot){
     }
 }
 
-function studentMainMenu($message, $bot){
+    function studentMainMenu($message, $bot){
     $db = $GLOBALS['db'];
     $json = $GLOBALS['json'];
     $phrases = $GLOBALS['phrases'];
@@ -231,6 +258,22 @@ function studentMainMenu($message, $bot){
         return $out;
     }
 
+    function teacherScheduleBeautifier($schedule){
+        $phrases = $GLOBALS['phrases'];
+        $out = "";
+        if (!empty($schedule)){
+            for ($i = 0; $i < sizeof($schedule); $i++){
+                $out .= "[ ".($i + 1)." пара | ".$schedule[$i]["time_"]." ]\n";
+                $out .= "\t📖\t ".$schedule[$i]["subject"]."\n";
+                $out .= "\t🚪\t ".$schedule[$i]["audience"]."\n";
+                $out .= "\t📌\t ".$schedule[$i]["type"]."\n";
+                $out .= "\n";
+            }
+        } else $out = $phrases['no_lessons'];
+
+        return $out;
+    }
+
     function getDateTime(){
         date_default_timezone_set("Europe/Kiev");
         //date_default_timezone_set("Europe/Amsterdam");
@@ -244,7 +287,87 @@ function studentMainMenu($message, $bot){
         return $result;
     }
 
+    function searchTeacher($message, $bot){
+        $chatid = $message->getChat()->getId();
+        $text = $message->getText();
+        $db = $GLOBALS['db'];
+        $jsn = new JSON("resources/teachers.json");
 
+        $teachers = $jsn->json;
+
+        $result = array();
+
+        foreach ($teachers as $item){
+            if (strchr($item, $text)){
+                $result[] = $item;
+            }
+        }
+
+        if (!empty($result)){
+            $keyboard = new \TelegramBot\Api\Types\ReplyKeyboardMarkup(array_chunk($result, 3, false), true);
+            $bot->sendMessage($chatid, 'Знайдені викладачі: ', null, false, null, $keyboard);
+            $db->updateUserNav($message->getFrom()->getId(), 22);
+        } else {
+            $bot->sendMessage($chatid, 'Збігів не знайдено, спробуйте ще раз');
+        }
+    }
+
+    function teacherCheck($message, $bot){
+        $jsn = new JSON("resources/teachers.json");
+        $db = $GLOBALS['db'];
+
+        $chatid = $message->getChat()->getId();
+        $text = $message->getText();
+
+        $teachers = $jsn->json;
+
+        if (in_array($text, $teachers)){
+            $db->updateUserNav($message->getFrom()->getId(), 23);
+            $db->updateTeacherName($message->getFrom()->getId(), $text);
+            $keyboard = new \TelegramBot\Api\Types\ReplyKeyboardMarkup(array(array("Сьогодні", "Завтра"), array("Тиждень", "Повернутись до вибору ролі")));
+            $bot->sendMessage($chatid, "Виберіть пункт який Вас цікавить нижче: ", null, false, null, $keyboard);
+        } else {
+            $db->updateUserNav($message->getFrom()->getId(), 2);
+            searchTeacher($message, $bot);
+        }
+    }
+
+    function teacherMainMenu($message, $bot){
+        $db = $GLOBALS['db'];
+        $phrases = $GLOBALS['phrases'];
+
+        $available = array("Сьогодні", "Завтра", "Тиждень", "Повернутись до вибору ролі","Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота");
+        $text = $message->getText();
+        $chatid = $message->getChat()->getId();
+        $userid = $message->getFrom()->getId();
+        $main_keyboard = new \TelegramBot\Api\Types\ReplyKeyboardMarkup(array(array("Сьогодні", "Завтра"), array("Тиждень", "Повернутись до вибору ролі")));
+
+        $teacher = $db->getTeacherName($message->getFrom()->getId());
+        $oddness = "Парний";
+
+        $weekdays = array("Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота");
+
+        if (in_array($text, $available)){
+            if ($text === "Тиждень"){
+                $keyboard = new \TelegramBot\Api\Types\ReplyKeyboardMarkup(array(array("Понеділок", "Вівторок", "Середа"), array("Четвер", "П'ятниця", "Субота")));
+                $bot->sendMessage($chatid, 'Виберіть потрібний день тижня:', null, false, null, $keyboard);
+
+            } else if ($text === "Сьогодні"){
+                $schedule = $db->getTeacherSchedule($teacher, "ПОНЕДІЛОК", $oddness);
+                $bot->sendMessage($chatid, teacherScheduleBeautifier($schedule), null, false, null, $main_keyboard);
+
+            } else if ($text === "Завтра"){
+
+            } else if (in_array($text, $weekdays)){
+
+            } else if ($text === "Повернутись до вибору ролі"){
+                $db->updateUserNav($message->getFrom()->getId(), 2);
+                welcome($message, $bot, false);
+            } else {
+                $bot->sendMessage($chatid, $phrases['invalid_input'], null, false, null, $main_keyboard);
+            }
+        }
+    }
 
 $bot->run();
 

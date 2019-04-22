@@ -4,7 +4,7 @@
 class JSON
 {
 
-    private $json;
+    public $json;
 
     /**
      * Constructor for JSON
@@ -13,8 +13,8 @@ class JSON
      */
     public function __construct($path)
     {
-        $string = file_get_contents($path);
-        $this->json = json_decode($string, true);
+            $string = file_get_contents($path);
+            $this->json = json_decode($string, true);
     }
 
     /**
